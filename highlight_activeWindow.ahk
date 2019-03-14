@@ -31,9 +31,9 @@ SetTimer,timerLbl2000,2000 ; ; 30.08.2018 13:52 it sometimes happesn. and if it 
 
 ;/¯¯¯¯ configuration ¯¯ 190215115120 ¯¯ 15.02.2019 11:51:20 ¯¯\
 doMoveBottomInsideScreen := true
-;\____ configuration __ 190215115123 __ 15.02.2019 11:51:23 __/
+;\____ configuration __ 190215115123 __ 15.02.2019 11:51:24 __/
 
-
+ 
 SetTimer, DrawRect, 700
 border_thickness = 7
 border_color = FF0000
