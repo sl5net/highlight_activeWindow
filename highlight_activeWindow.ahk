@@ -2,7 +2,6 @@
 #Persistent
 #SingleInstance,force
 
-
 ;~ please use this ! as first line in every script before all includes! :)
 isDevellopperMode:= true ; enthällt auch update script.
 
