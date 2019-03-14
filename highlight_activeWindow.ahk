@@ -21,9 +21,9 @@ isDevellopperMode:= true ; enthällt auch update script.
 ;WinGetPos,x,y,w,h,ahk_class Shell_TrayWnd ahk_exe Explorer.EXE
 ; msgbox, %w% %A_ScreenWidth%
 
-#notrayicon
+; #notrayicon
 
-taskbarArea := getTaskBarArea(doShowArea:=false) ; returns: taskbarArea := { x:, y:, rigth:, bottom:, w: , h: }
+; taskbarArea := getTaskBarArea(doShowArea:=false) ; returns: taskbarArea := { x:, y:, rigth:, bottom:, w: , h: }
 
 
 SetTimer,lblCheckTrayIconStatus,100 ; ; 30.08.2018 13:52 it sometimes happesn. and if it happens then its really ugly !!!! :( !!
@@ -95,6 +95,7 @@ if(isWindowMaximized){
 	
     ; WinMove, A,, activeWindowNewPos.Left, activeWindowNewPos.Top
 	
+	taskbarArea := getTaskBarArea(doShowArea:=false) ; returns: taskbarArea := { x:, y:, rigth:, bottom:, w: , h: }
 	taskbarMonitorNum := taskbarArea["taskbarMonitorNum"]
 	if(taskbarMonitorNum == activeMonitor.Num)
 		offset := 120
@@ -296,14 +297,14 @@ activeWindowNewPos.Top := nextMonitor.Top+(nextMonitor.Bottom-nextMonitor.Top)*r
 WinMove, A,, activeWindowNewPos.Left, activeWindowNewPos.Top
 Return
 
-~LButton::
-sleep,200
-If( !GetKeyState("LButton") )
-	return
-while(GetKeyState("LButton") )
-	sleep,80
-taskbarArea := getTaskBarArea(doShowArea:=false)
-return
+; ~LButton:: ; https://www.autohotkey.com/boards/viewtopic.php?f=76&t=62752
+; sleep,200
+; If( !GetKeyState("LButton") )
+; return
+; while(GetKeyState("LButton") )
+; sleep,80
+; taskbarArea := getTaskBarArea(doShowArea:=false)
+; return
 
 ;Credits to "just me" for the following code:
 

@@ -4,9 +4,11 @@ ScriptNameLetter2 := SubStr(A_ScriptName, 1 , 2)
 ;~ tatam
 if(!iconAdress)
 	iconAdress=%HardDriveLetter%:\fre\public\Graf-Bilder\icon\abc123\%ScriptNameLetter2%.ico
-
 if(!FileExist(iconAdress))
 	iconAdress=%HardDriveLetter%:\fre\public\Graf-Bilder\icon\abc123\%ScriptNameLetter%.ico
+; C:\fre\public\Graf-Bilder\icon\abc123
+if(!FileExist(iconAdress))
+	iconAdress=icon\abc123\%ScriptNameLetter2%.ico
 ; C:\fre\public\Graf-Bilder\icon\abc123
 
 ; Checks for the existence of a file or folder.
