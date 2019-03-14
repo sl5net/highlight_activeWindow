@@ -7,6 +7,20 @@ isDevellopperMode:= true ; enthällt auch update script.
 
 #Include *i %A_ScriptDir%\inc_ahk\init_global.init.inc.ahk
 
+/*
+	ahk_class Shell_TrayWnd ahk_exe Explorer.EXE ahk_id 0x10188
+	Cursor:  IBeam  ▪  Caret:  x102 y418  ▪  Client area:  x0 y0 w1920 h116
+	
+	Class NN:  MSTaskListWClass1  ▪  Win class:  MSTaskListWClass
+	Pos:  x271 y0  ▪  x²1673 y²115  ▪  Size:  w1403 h116
+	Pos relative client area:  x271 y0  ▪  x²1673 y²115
+	Mouse relative control:  x1349 y91  ▪  0.9615, 0.7845
+	HWND:  0x101ce  ▪  Focus control:  
+	Style:  0x56000000  ▪  ExStyle:  0x00000000  ▪   hide styles 
+*/
+;WinGetPos,x,y,w,h,ahk_class Shell_TrayWnd ahk_exe Explorer.EXE
+; msgbox, %w% %A_ScreenWidth%
+
 #notrayicon
 
 taskbarArea := getTaskBarArea(doShowArea:=false) ; returns: taskbarArea := { x:, y:, rigth:, bottom:, w: , h: }
@@ -97,18 +111,19 @@ if(isWindowMaximized){
 	
 	; taskbarArea := { x:, y:, rigth:, bottom:, w: , h: }
 	; layout := "|1 1| |2 2| _1 ¯1 _2 ¯2"
+	pixFreeSpaceBeetween := 5
 	if(taskbarMonitorNum == activeMonitor.Num){
 		if(taskbarArea["layout"] == "¯1"){
 		; taskbarArea := { x:, y:, rigth:, bottom:, w: , h: }
 			xW := 1 ; + 5
-			yW := taskbarArea["bottom"] - 3
+			yW := taskbarArea["bottom"] - 3 + pixFreeSpaceBeetween
 			hW := h - taskbarArea["bottom"]
 			wW := w - 6
 		}
 		else if(taskbarArea["layout"] == "_1"){
 		; taskbarArea := { x:, y:, rigth:, bottom:, w: , h: }
 			xW := 1 ; + 5
-			yW := - 3
+			yW := - 3 - pixFreeSpaceBeetween
 			hW := taskbarArea["y"]
 			wW := w - 6
 		}
@@ -117,11 +132,11 @@ if(isWindowMaximized){
 			xW := 1 ; + 5
 			yW := - 3
 			hW := h
-			wW := taskbarArea["x"]
+			wW := taskbarArea["x"] - pixFreeSpaceBeetween
 		}
 		else if(taskbarArea["layout"] == "|1"){
 		; taskbarArea := { x:, y:, rigth:, bottom:, w: , h: }
-			xW := taskbarArea["w"] ; + 5
+			xW := taskbarArea["w"] + pixFreeSpaceBeetween ; + 5
 			yW := - 3
 			hW := h
 			wW := w - taskbarArea["w"] - 3
@@ -129,7 +144,7 @@ if(isWindowMaximized){
 		else if(taskbarArea["layout"] == "¯2"){
 		; taskbarArea := { x:, y:, rigth:, bottom:, w: , h: }
 			xW := taskbarArea["x"] ; + 5
-			yW := taskbarArea["bottom"] - 3
+			yW := taskbarArea["bottom"] - 3 + pixFreeSpaceBeetween
 			hW := h - taskbarArea["bottom"]
 			wW := w - 6
 		}
@@ -138,18 +153,18 @@ if(isWindowMaximized){
 			xW := x ; + 5
 			yW := - 3
 			hW := h
-			wW := w - taskbarArea["w"]
+			wW := w - taskbarArea["w"] - pixFreeSpaceBeetween
 		}
 		else if(taskbarArea["layout"] == "_2"){
 		; taskbarArea := { x:, y:, rigth:, bottom:, w: , h: }
 			xW := x ; + 5
 			yW := - 3
-			hW := taskbarArea["y"]
+			hW := taskbarArea["y"] - pixFreeSpaceBeetween
 			wW := w - 6
 		}
 		else if(taskbarArea["layout"] == "|2"){
 		; taskbarArea := { x:, y:, rigth:, bottom:, w: , h: }
-			xW := taskbarArea["right"] ; + 5
+			xW := taskbarArea["right"] + pixFreeSpaceBeetween ; + 5
 			yW := - 3
 			hW := h
 			wW := w - taskbarArea["w"] - 3
@@ -158,17 +173,18 @@ if(isWindowMaximized){
 			ToolTip, % taskbarArea["right"] " = right"
 	; ToolTip, % taskbarArea["layout"] " = layout"
 			Clipboard := taskbarArea["layout"]
-			msgbox, % taskbarArea["layout"] " = layout"
+			msgbox, % taskbarArea["layout"] " = layout 19-03-14_13-34"
 		}
 		loop,3
 		{
 			Sleep,100
 			WinMove,A,,% xW, % yW, % wW, % hW
 		}
-	; msgbox, % taskbarArea["layout"] " = layout"
+	  	; msgbox, % taskbarArea["layout"] " = layout" 
 	}else{
 		isTaskbarBottom := ( taskbarArea["y"] > A_ScreenHeight )
 		
+	  	; msgbox, % taskbarArea["layout"] " = layout 19-03-14_13-33"
 		
 		
 		if(isTaskbarBottom){

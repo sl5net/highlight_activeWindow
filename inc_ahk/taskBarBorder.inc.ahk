@@ -1,4 +1,5 @@
 ﻿; postet here (19-03-14_10-30): https://www.autohotkey.com/boards/viewtopic.php?f=6&t=62748
+; ^--- better method probably is using: MYTaskListClass1
 ; following source is based on https://www.autohotkey.com/boards/viewtopic.php?f=6&t=17834&hilit=findtext
 ; returns: taskbarArea := { x:, y:, rigth:, bottom:, w: , h: }
 ; demo: taskbarArea := getTaskBarArea(doShowArea:=true)
@@ -6,11 +7,13 @@
 getTaskBarArea(doShowArea:=false){
 	; it returns (if found): taskbarArea := { x:, y:, rigth:, bottom:, w: , h: }
 	
-	buttonStartWindows10_Text:="|<>0xFFFFFF@1.00$32.000000000A0007z003rzk0Dxzw03zTz00zrzk0Dxzw03zTz00zrzk0000003zTz00zrzk0Dxzw03zTz00zrzk0Dxzw03zTz003rzk000Tw000030U"
+	if(false){
+		buttonStartWindows10_Text:="|<>0xFFFFFF@1.00$32.000000000A0007z003rzk0Dxzw03zTz00zrzk0Dxzw03zTz00zrzk0000003zTz00zrzk0Dxzw03zTz00zrzk0Dxzw03zTz003rzk000Tw000030U"
 ; taskbarArea := { left:0, rigth:0, top:0, bottom:0, width:0 , height:0 }
-	; layout := "|1 1| |2 2| _1 ¯1 _2 ¯2"
-	taskbarArea := { layout:"_1notSet", x:0, y:0, rigth:0, bottom:0, w:0 , h:0 }
-	if ok:=FindText(22,76,150000,150000,0,0,buttonStartWindows10_Text)
+	}
+	; layout := "|1 1| |2 2| _1 ¯1 _2 ¯2"	
+	; if ok:=FindText(22,76,150000,150000,0,0,buttonStartWindows10_Text)
+	if(false)
 	{
 		CoordMode, Mouse
 		X:=ok.1, Y:=ok.2, W:=ok.3, H:=ok.4, Comment:=ok.5
@@ -130,6 +133,53 @@ getTaskBarArea(doShowArea:=false){
 				taskbarArea["bottom"] := A_ScreenHeight
 			}
 		}
+	}
+	
+	WinGetPos,x,y,w,h,ahk_class Shell_TrayWnd ahk_exe Explorer.EXE
+	taskbarArea := { layout:"_1notSet", x:x, y:y, rigth:0, bottom:0, w:w , h:h }
+	taskbarArea["right"] := x + w
+	taskbarArea["bottom"] := y + h
+	if(true)
+	{
+		CoordMode, Mouse
+		; X:=ok.1, Y:=ok.2, W:=ok.3, H:=ok.4, Comment:=ok.5
+		;MouseMove, X+W//2, Y+H//2 ; centere of icon
+		if(x <= 1 && h == A_ScreenHeight){
+			; on first monitor top,left
+			taskbarArea["taskbarMonitorNum"] := 1
+			layout := "|1"
+		}else if( y <= 1 && w == A_ScreenWidth){
+				; on first monitor top
+			taskbarArea["taskbarMonitorNum"] := 1
+			layout := "¯1"
+		}else if(x > A_ScreenWidth - 300 && x < A_ScreenWidth && h == A_ScreenHeight){
+			; on first monitor top,right
+			taskbarArea["taskbarMonitorNum"] := 1
+			layout := "1|"
+		}else if(x >= A_ScreenWidth && x < A_ScreenWidth + 300 && y == 1 && h == A_ScreenHeight ){
+			; on second monitor left
+			taskbarArea["taskbarMonitorNum"] := 2
+			layout := "|2"
+		}else if(x >= A_ScreenWidth && x < A_ScreenWidth + 300  && y == 1 && h < A_ScreenHeight ){
+			; on second monitor top
+			layout := "¯2"
+			taskbarArea["taskbarMonitorNum"] := 2
+		}else if( y <= 1 && x > 2*A_ScreenWidth - 300 && x < 2*A_ScreenWidth ){
+		; on second monitor top,rigth
+			layout := "2|"
+			taskbarArea["taskbarMonitorNum"] := 2
+		} else if(x >= A_ScreenWidth && y > A_ScreenHeight - 300 && w == A_ScreenWidth ){
+				; taskbar is second monitor at bottom
+			taskbarArea["taskbarMonitorNum"] := 2
+			layout := "_2"
+		}else if(x <= 1 && y > A_ScreenHeight - 300 && w == A_ScreenWidth ){
+				; taskbar is first monitor at bottom
+			taskbarArea["taskbarMonitorNum"] := 1
+			layout := "_1"
+		}else{
+			MsgBox, Oops 19-03-14_13-31 WinGetPos x=%x% y=%y% w=%w% h=%h%
+		}
+		
 	}
 	taskbarArea["layout"] := layout
 	if(doShowArea){
