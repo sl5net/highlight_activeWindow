@@ -21,7 +21,7 @@ isDevellopperMode:= true ; enthällt auch update script.
 ;WinGetPos,x,y,w,h,ahk_class Shell_TrayWnd ahk_exe Explorer.EXE
 ; msgbox, %w% %A_ScreenWidth%
 
-; #notrayicon
+#notrayicon
 
 ; taskbarArea := getTaskBarArea(doShowArea:=false) ; returns: taskbarArea := { x:, y:, rigth:, bottom:, w: , h: }
 
@@ -31,10 +31,6 @@ SetTimer,timerLbl2000,2000 ; ; 30.08.2018 13:52 it sometimes happesn. and if it 
 
 ;/¯¯¯¯ configuration ¯¯ 190215115120 ¯¯ 15.02.2019 11:51:20 ¯¯\
 doMoveBottomInsideScreen := true
-;isTaskbarBottom := false ; if false then at top
-; taskbarArea := { x:, y:, rigth:, bottom:, w: , h: }
-isTaskbarBottom := ( taskbarArea["y"] > A_ScreenHeight )
-taskbarMonitorNum := 1 ; if false then at top
 ;\____ configuration __ 190215115123 __ 15.02.2019 11:51:23 __/
 
 
