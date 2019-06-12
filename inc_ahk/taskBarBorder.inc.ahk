@@ -1,21 +1,24 @@
-﻿; postet here (19-03-14_10-30): https://www.autohotkey.com/boards/viewtopic.php?f=6&t=62748
-; ^--- better method probably is using: MYTaskListClass1
+﻿; postet here (19-03-14_10-30): 
+; =======> https://www.autohotkey.com/boards/viewtopic.php?f=6&t=62748 
 ; following source is based on https://www.autohotkey.com/boards/viewtopic.php?f=6&t=17834&hilit=findtext
 ; returns: taskbarArea := { x:, y:, rigth:, bottom:, w: , h: }
-; demo: taskbarArea := getTaskBarArea(doShowArea:=true)
 ;/¯¯¯¯ taskbarArea ¯¯ 190314102217 ¯¯ 14.03.2019 10:22:17 ¯¯\
-getTaskBarArea(doShowArea:=false){
+getTaskBarArea(doShowArea:=false, doSearchRemotDesktopScreen := false){
 	; it returns (if found): taskbarArea := { x:, y:, rigth:, bottom:, w: , h: }
 	
-	if(false){
+	if(doSearchRemotDesktopScreen){
 		buttonStartWindows10_Text:="|<>0xFFFFFF@1.00$32.000000000A0007z003rzk0Dxzw03zTz00zrzk0Dxzw03zTz00zrzk0000003zTz00zrzk0Dxzw03zTz00zrzk0Dxzw03zTz003rzk000Tw000030U"
 ; taskbarArea := { left:0, rigth:0, top:0, bottom:0, width:0 , height:0 }
 	}
 	; layout := "|1 1| |2 2| _1 ¯1 _2 ¯2"	
-	; if ok:=FindText(22,76,150000,150000,0,0,buttonStartWindows10_Text)
-	if(false)
+	
+	;/¯¯¯¯ doSearchRemotDesktopScreen ¯¯ 190319093654 ¯¯ 19.03.2019 09:36:54 ¯¯\
+	if(doSearchRemotDesktopScreen)
 	{
-		CoordMode, Mouse
+		msg := "please use it in fullscreen (Seeh,19-03-19_09-39)"
+		ToolTip,% msg "`n(" A_ThisFunc " " RegExReplace(A_LineFile,".*\\") ":"  A_LineNumber ")" , 200, 200, 19
+		if ok:=FindText(22,76,150000,150000,0,0,buttonStartWindows10_Text)
+			CoordMode, Mouse
 		X:=ok.1, Y:=ok.2, W:=ok.3, H:=ok.4, Comment:=ok.5
 	;MouseMove, X+W//2, Y+H//2 ; centere of icon
 		if(Y < 300){
@@ -133,7 +136,8 @@ getTaskBarArea(doShowArea:=false){
 				taskbarArea["bottom"] := A_ScreenHeight
 			}
 		}
-	}
+	} 
+	;\____ doSearchRemotDesktopScreen __ 190319093636 __ 19.03.2019 09:36:36 __/
 	
 	WinGetPos,x,y,w,h,ahk_class Shell_TrayWnd ahk_exe Explorer.EXE
 	taskbarArea := { layout:"_1notSet", x:x, y:y, rigth:0, bottom:0, w:w , h:h }
